@@ -180,6 +180,7 @@ fabric.properties
 !.vscode/extensions.json
 
 ### Project
-/dist/**/*
+dist
+.ng_pkg_build
 *.tgz
-/node_modules
+node_modules

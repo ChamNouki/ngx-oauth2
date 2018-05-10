@@ -1,4 +1,1 @@
-/**
- * Entry point for all public APIs of the package.
- */
-export * from './src/ngx-oauth2';
+export * from './src/app/oauth2/oauth2.module';
