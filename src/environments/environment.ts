@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   oauth2: {
     clientId: '',
-    loginEndpoint: ''
+    loginEndpoint: 'https://accounts.google.com/signin/v2'
   }
 };
 

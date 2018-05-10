@@ -7,6 +7,8 @@ import { OAuth2TokenService } from './oauth2-token.service';
 import { OAuth2ModalService } from './oauth2-modal.service';
 import { OAuth2EventFlow } from './oauth2-event-flow.service';
 import { OAuth2ConfigService } from './oauth2-config.service';
+import { LockingModalComponent } from '../components/locking-modal/locking-modal.component';
+import { openLoginScreen } from './openLoginScreen';
 
 @Injectable()
 export class OAuth2ConnectionService {
@@ -47,14 +49,8 @@ export class OAuth2ConnectionService {
 
     this.setCallbackFunction();
 
-    this.modalService.open();
-    this.openLoginScreen();
-  }
-
-  public openLoginScreen() {
-    if (isPlatformBrowser(this.platformId)) {
-      window.open(this.config.loginUrl, 'oauth2_login');
-    }
+    this.modalService.open(LockingModalComponent);
+    openLoginScreen(this.config.loginUrl, this.platformId);
   }
 
   private setCallbackFunction() {

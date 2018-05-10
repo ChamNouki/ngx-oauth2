@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { OAuth2ConnectionService } from '../../services/oauth2-connection.service';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { OAuth2ConfigService } from '../../services/oauth2-config.service';
+import { openLoginScreen } from '../../services/openLoginScreen';
 
 @Component({
   selector: 'oauth2-locking-modal',
@@ -7,10 +8,10 @@ import { OAuth2ConnectionService } from '../../services/oauth2-connection.servic
   templateUrl: './locking-modal.component.html'
 })
 export class LockingModalComponent {
-  constructor(private connectionService: OAuth2ConnectionService) {
+  constructor(@Inject(PLATFORM_ID) private platformId: any, private config: OAuth2ConfigService) {
   }
 
   public openLoginScreen() {
-    this.connectionService.openLoginScreen();
+    openLoginScreen(this.config.loginUrl, this.platformId);
   }
 }

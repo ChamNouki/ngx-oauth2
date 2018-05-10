@@ -28,12 +28,12 @@ export class OAuth2ModalService {
     }
   }
 
-  public open() {
+  public open<T>(component: Type<T>) {
     if ( this.modalRef != null ) {
       this.dispose();
     }
 
-    this.modalRef = this.resolverFactory.resolveComponentFactory(LockingModalComponent).create(this.injector);
+    this.modalRef = this.resolverFactory.resolveComponentFactory(component).create(this.injector);
     this.appRef.attachView(this.modalRef.hostView);
 
     this.hostDomElement = this.appRef.components[0].location.nativeElement;
