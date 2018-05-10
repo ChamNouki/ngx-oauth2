@@ -11,6 +11,9 @@ script:
 - npm run build
 deploy:
   skip_cleanup: true
+  on:
+    tags: true
+    branch: master
   provider: npm
   email: cham.nouki@gmail.com
   api_key:
