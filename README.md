@@ -26,27 +26,6 @@ Just import the module and give him the API Management's provided clientId which
 export class AppModule { }
 ```
 
-To enable module authentication process you juste have to add the OAuth2Interceptor as an HTTP_INTERCEPTORS provider in your module :
-
-```Typescript
-@NgModule({
-    imports: [
-        ...,
-        OAuth2Module.forRoot({clientId: '', loginEndpoint: ''})
-    ],
-    providers: [
-        ...,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: OAuth2Interceptor,
-            multi: true,
-        }
-    ],
-    bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
 And you just have to use the HttpClient service the regular way.
 
 ### Advanced configuration

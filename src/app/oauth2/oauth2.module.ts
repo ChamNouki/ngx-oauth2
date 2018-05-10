@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { applicationRouter } from './oauth2.routes';
 import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
@@ -16,6 +17,7 @@ import { OAuth2UserService } from './services/oauth2-user.service';
 import { OAuth2Service } from './services/oauth2.service';
 import { OAuth2ConnectedGuard } from './services/guards/oauth2-connected.guard';
 import { OAuth2VisitorGuard } from './services/guards/oauth2-visitor.guard';
+import { OAuth2Interceptor } from './services/interceptors/oauth2.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,12 @@ export class OAuth2Module {
         OAuth2UserService,
         OAuth2Service,
         OAuth2ConnectedGuard,
-        OAuth2VisitorGuard
+        OAuth2VisitorGuard,
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: OAuth2Interceptor,
+          multi: true,
+        }
       ]
     };
   }
