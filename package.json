@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pack": "cd ./dist && npm pack && mv *.tgz ..",
-    "publish": "cd ./dist && npm publish"
+    "publish": "npm publish ./dist"
   },
   "private": true,
   "peerDependencies": {
