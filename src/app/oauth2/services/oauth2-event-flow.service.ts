@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, of, throwError, empty } from 'rxjs';
+import { Observable, Subject, of, throwError, EMPTY } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
 import { IOAuth2Event } from './models/oauth2-events.interface';
 import { OAuth2Events } from './models/oauth2-events.enum';
@@ -63,7 +63,7 @@ export class OAuth2EventFlow {
 
     return this.eventFlow.pipe(
       filter((event: IOAuth2Event) => event.action === OAuth2Events.LOGGED_OUT),
-      mergeMap((event: IOAuth2Event) => empty())
+      mergeMap((event: IOAuth2Event) => EMPTY)
     );
   }
 

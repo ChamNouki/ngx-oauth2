@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable, from, throwError } from 'rxjs';
 import { OAuth2EventFlow } from './oauth2-event-flow.service';
 import { OAuth2UserService } from './oauth2-user.service';
 import { OAuth2TokenService } from './oauth2-token.service';
@@ -32,7 +32,7 @@ export class OAuth2Service {
     if (this.config.userManagement) {
       return from(this.userService.getUser<T>());
     }
-    return Observable.throw('User management is not activated cause userEndpoint config is not set.');
+    return throwError('User management is not activated cause userEndpoint config is not set.');
   }
 
   public token(): OAuth2Token {

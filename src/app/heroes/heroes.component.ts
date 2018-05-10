@@ -4,7 +4,7 @@ import { Hero } from '../models/hero';
 import { HeroService } from '../services/hero.service';
 
 @Component({
-  selector: 'my-heroes',
+  selector: 'oauth2-heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css']
 })
@@ -23,7 +23,7 @@ export class HeroesComponent implements OnInit {
       .subscribe(
         heroes => (this.heroes = heroes),
         error => (this.error = error)
-      )
+      );
   }
 
   addHero(): void {
