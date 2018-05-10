@@ -1,6 +1,7 @@
 {
   "name": "ngx-oauth2",
   "version": "3.0.1",
+  "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "clean": "rm -rf .ng_pkg_build dist *.tgz",
@@ -12,6 +13,24 @@
     "pack": "cd ./dist && npm pack && mv *.tgz ..",
     "publish": "npm publish ./dist"
   },
+  "author": {
+    "email": "cham.nouki@gmail.com",
+    "name": "Cham Nouki",
+    "url": "https://github.com/ChamNouki"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChamNouki/ngx-oauth2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ChamNouki/ngx-oauth2/issues"
+  },
+  "homepage": "https://github.com/ChamNouki/ngx-oauth2",
+  "keywords": [
+    "angular",
+    "oauth2",
+    "typescript"
+  ],
   "peerDependencies": {
     "@angular/common": ">= 6.0.0",
     "@angular/core": ">= 6.0.0",
