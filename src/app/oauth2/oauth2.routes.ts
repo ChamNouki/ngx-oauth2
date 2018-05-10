@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { OAuth2CallbackComponent } from './components/OAuth2-callback.component';
+import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 const routes: Routes = [

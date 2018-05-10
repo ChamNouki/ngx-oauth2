@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { applicationRouter } from './OAuth2.routes';
-import { OAuth2CallbackComponent } from './components/OAuth2-callback.component';
+import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
 import { LockingModalComponent } from './components/locking-modal/locking-modal.component';
 import { IOAuth2ClientConfig, OAuth2ClientConfig } from './services/models/oauth2-client-config.model';
 import { OAuth2EventFlow } from './services/oauth2-event-flow.service';
