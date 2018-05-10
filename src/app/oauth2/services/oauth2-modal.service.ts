@@ -7,6 +7,7 @@ import {
   Injector,
   Type
 } from '@angular/core';
+import { LockingModalComponent } from '../components/locking-modal/locking-modal.component';
 
 @Injectable()
 export class OAuth2ModalService {
@@ -27,12 +28,12 @@ export class OAuth2ModalService {
     }
   }
 
-  public open<T>(component: Type<T>) {
+  public open() {
     if ( this.modalRef != null ) {
       this.dispose();
     }
 
-    this.modalRef = this.resolverFactory.resolveComponentFactory(component).create(this.injector);
+    this.modalRef = this.resolverFactory.resolveComponentFactory(LockingModalComponent).create(this.injector);
     this.appRef.attachView(this.modalRef.hostView);
 
     this.hostDomElement = this.appRef.components[0].location.nativeElement;

@@ -1,9 +1,12 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { OAuth2CallbackComponent } from './components/OAuth2-callback.component';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
 
-export const routes: Routes = [
+const routes: Routes = [
   {
     component: OAuth2CallbackComponent,
     path: 'oauth2_callback'
   }
 ];
+
+export const applicationRouter: ModuleWithProviders = RouterModule.forChild(routes);

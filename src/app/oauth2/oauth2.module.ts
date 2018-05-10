@@ -1,9 +1,9 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { routes } from './OAuth2.routes';
+import { applicationRouter } from './OAuth2.routes';
 import { OAuth2CallbackComponent } from './components/OAuth2-callback.component';
-import { LockingModalComponent } from './components/locking-modal.component';
+import { LockingModalComponent } from './components/locking-modal/locking-modal.component';
 import { IOAuth2ClientConfig, OAuth2ClientConfig } from './services/models/oauth2-client-config.model';
 import { OAuth2EventFlow } from './services/oauth2-event-flow.service';
 import { OAuth2ConfigService } from './services/oauth2-config.service';
@@ -29,7 +29,7 @@ import { OAuth2VisitorGuard } from './services/guards/oauth2-visitor.guard';
     LockingModalComponent
   ],
   imports: [
-    RouterModule.forChild(routes)
+    applicationRouter
   ],
   providers: []
 })
