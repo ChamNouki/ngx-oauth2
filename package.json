@@ -1,6 +1,6 @@
 {
   "name": "ngx-oauth2",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "ng": "ng",
     "clean": "rm -rf .ng_pkg_build dist *.tgz",
