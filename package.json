@@ -12,7 +12,6 @@
     "pack": "cd ./dist && npm pack && mv *.tgz ..",
     "publish": "npm publish ./dist"
   },
-  "private": true,
   "peerDependencies": {
     "@angular/common": ">= 6.0.0",
     "@angular/core": ">= 6.0.0",
