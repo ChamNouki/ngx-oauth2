@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { applicationRouter } from './OAuth2.routes';
+import { applicationRouter } from './oauth2.routes';
 import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
 import { LockingModalComponent } from './components/locking-modal/locking-modal.component';
 import { IOAuth2ClientConfig, OAuth2ClientConfig } from './services/models/oauth2-client-config.model';
