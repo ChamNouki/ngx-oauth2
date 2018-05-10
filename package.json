@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pack": "cd ./dist && npm pack && mv *.tgz ..",
-    "publish": "npm publish ./dist"
+    "publish:lib": "npm publish ./dist"
   },
   "author": {
     "email": "cham.nouki@gmail.com",

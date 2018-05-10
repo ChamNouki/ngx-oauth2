@@ -13,8 +13,9 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    branch: master
   provider: npm
   email: cham.nouki@gmail.com
+  file_glob: true
+  file: "dist/**/*"
   api_key:
     secure: KNP1IwhddOnDWE4UamJ0I8G/7eK+1+ukwLZQC/FSemHkCGokOLN+UcQGBa0/wCiKZiojai4quwR5Ymg0Xz88zbnNZ/ogazWUxtG2ogDfMawh7NA5BVWYEYrZgsbb4UAXlV8/Q7YFhpEMw0kURpzV7V/fqFSTqvr1ZXHCZccexEFh/TsH5mjfnrZ7ChCDISdwa2+WNsa27S/y8gNlZVstvpSM2VU3CCza7xogS4gfDCfHWTr2+VkF2V3wgaOoJ83CrxFjYoMoU1WenbC2cbW4SdMcyJRsghXon/I1Rp8rvwA2MTGj8TWqT8xBcfL+NHxVT8qHr4EMYbqMD2nN55o33/Jt/zWlGb9vCuY5f3NkTy3xI99vfUc8aimxFK1eGWO9V9XzY+esTf7LNX6jYrmusc2HQd0Big3imuvwIEGK1gwjQWmLhJacEp3GvTuVCWVKqdj4+fTpOM6GtL/XKBXWKbLqnJYz4saMX1TzQ19eTr5E84HD7sqRFzR/aSPrxVT2hBDOcEJEMFnfS5/s3UUdAUtx1vTVlotjp8Ynm0QXBc4oU7PdnfgkcM9HW5YjWL+/y/c+9opxj+lHj/oTYG+WFUZR4i5BU7n1WQWDbAxSM8KKgeCB2mcFqhx8+2sJLob2qrtLNBAdUJjsKohKGMt3dkiOPFG+36/G/IBHEqWAqpY=
