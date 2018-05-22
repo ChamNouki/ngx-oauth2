@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OAuth2ConfigService } from './oauth2-config.service';
 import { OAuth2EventFlow } from './oauth2-event-flow.service';
-import { IOAuth2Event } from './models/oauth2-events.interface';
+import { OAuth2Event } from './models/oauth2-events.interface';
 import { OAuth2Events } from './models/oauth2-events.enum';
 
 @Injectable()
@@ -10,13 +10,13 @@ export class OAuth2UserService {
   private user: any;
 
   constructor(private http: HttpClient, private config: OAuth2ConfigService, private eventFlow: OAuth2EventFlow) {
-    this.eventFlow.flow.subscribe((event: IOAuth2Event) => {
+    this.eventFlow.flow.subscribe((event: OAuth2Event) => {
       switch (event.action) {
         case OAuth2Events.USER_INFO_REQUIRED:
           this.getUser();
           break;
-        case OAuth2Events.LOGGOUT_REQUIRED:
-        case OAuth2Events.LOGIN_FAILED:
+        case OAuth2Events.SESSION_END_REQUIRED:
+        case OAuth2Events.AUTHENTICATION_FAILED:
           this.reset();
       }
     });
@@ -32,7 +32,7 @@ export class OAuth2UserService {
         this.user = await this.http.get<T>(userInfoUrl).toPromise();
         this.eventFlow.userInfoRecovered(this.user);
       } catch (error) {
-        this.eventFlow.failedToLogin(error);
+        this.eventFlow.failedToAuthenticate(error);
         throw error;
       }
     }

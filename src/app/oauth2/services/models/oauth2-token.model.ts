@@ -3,15 +3,17 @@ import * as moment from 'moment';
 export class OAuth2Token {
 
   public accessToken?: string;
-  public state?: string;
   public tokenType?: string;
+  public idToken?: string;
+  public state?: string;
   public expiresIn?: number;
   public receivedAt: moment.Moment;
 
   constructor(params: Map<string, string>) {
     this.accessToken = params.get('access_token');
-    this.state = params.get('state');
     this.tokenType = params.get('token_type');
+    this.idToken = params.get('id_token');
+    this.state = params.get('state');
     this.expiresIn = Number(params.get('expires_in'));
     this.receivedAt = moment.utc();
   }

@@ -22,7 +22,7 @@ export class OAuth2HandlerService {
       }, 0),
       takeWhile((acc) => acc < 2),
       mergeMap(() => {
-        return this.authEventFlow.requireLogin();
+        return this.authEventFlow.requireAuthentication();
       })
     );
   }

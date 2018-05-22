@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { IExtendedWindow } from './models/extended-window.interface';
-import { IOAuth2Event } from './models/oauth2-events.interface';
+import { OAuth2Event } from './models/oauth2-events.interface';
 import { OAuth2Events } from './models/oauth2-events.enum';
 import { OAuth2TokenService } from './oauth2-token.service';
 import { OAuth2ModalService } from './oauth2-modal.service';
@@ -19,27 +19,27 @@ export class OAuth2ConnectionService {
     private eventFlow: OAuth2EventFlow,
     private modalService: OAuth2ModalService,
     private tokenService: OAuth2TokenService) {
-    this.eventFlow.flow.subscribe((event: IOAuth2Event) => {
+    this.eventFlow.flow.subscribe((event: OAuth2Event) => {
       switch (event.action) {
-        case OAuth2Events.LOGGIN_REQUIRED:
-          this.login();
+        case OAuth2Events.AUTHENTICATION_REQUIRED:
+          this.authenticate();
           break;
-        case OAuth2Events.LOGGOUT_REQUIRED:
-          this.logout();
+        case OAuth2Events.SESSION_END_REQUIRED:
+          this.endSession();
           break;
       }
     });
   }
 
-  public logout() {
-    const logoutUrl = this.config.logoutUrl;
+  public endSession() {
+    const logoutUrl = this.config.endSessionUrl;
     if (isPlatformBrowser(this.platformId) && logoutUrl) {
       window.open(logoutUrl, 'oauth2_logout');
     }
   }
 
-  public login() {
-    if (!isPlatformBrowser(this.platformId) || this.isLoginInProgress()) {
+  public async authenticate() {
+    if (!isPlatformBrowser(this.platformId) || this.isAuthenticationInProgress()) {
       return;
     }
 
@@ -50,18 +50,20 @@ export class OAuth2ConnectionService {
     this.setCallbackFunction();
 
     this.modalService.open(LockingModalComponent);
-    openLoginScreen(this.config.loginUrl, this.platformId);
+
+    const url = await this.config.getAuthorizationUrl();
+    openLoginScreen(url, this.platformId);
   }
 
   private setCallbackFunction() {
-    (window as IExtendedWindow).setOauthParams = (callingWindow: Window, tokenMap: Map<string, string>) => {
-      if (!tokenMap.has('access_token')) {
+    (window as IExtendedWindow).setOauthParams = (callingWindow: Window, callbackParams: Map<string, string>) => {
+      if (!callbackParams.has('access_token')) {
         throw new Error(`It seems that the fedid hasn't provided any access_token.`);
       }
 
       callingWindow.addEventListener('beforeunload', () => {
         this.zone.run(() => {
-          this.eventFlow.loggedIn(tokenMap);
+          this.eventFlow.authenticated(callbackParams);
         });
       });
 
@@ -71,7 +73,7 @@ export class OAuth2ConnectionService {
     };
   }
 
-  private isLoginInProgress(): boolean {
+  private isAuthenticationInProgress(): boolean {
     return isPlatformBrowser(this.platformId) && (window as IExtendedWindow).setOauthParams != null;
   }
 }

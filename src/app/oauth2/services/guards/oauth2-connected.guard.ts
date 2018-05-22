@@ -15,7 +15,7 @@ export class OAuth2ConnectedGuard implements CanActivate {
     if (this.authService.isConnected()) {
       return true;
     } else {
-      return this.eventFlow.requireLogin().pipe(
+      return this.eventFlow.requireAuthentication().pipe(
         mergeMap(() => of(this.authService.isConnected()))
       );
     }

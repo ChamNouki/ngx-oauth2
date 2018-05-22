@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   oauth2: {
-    clientId: '',
-    loginEndpoint: 'https://accounts.google.com/signin/v2'
+    clientId: 'fake_client_id',
+    authorizationEndpoint: 'http://keycloak-sso.app.norsys.fr/auth/realms/Norsys/protocol/openid-connect/auth'
   }
 };
 

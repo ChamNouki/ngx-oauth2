@@ -21,11 +21,11 @@ export class OAuth2Service {
   public login(): Observable<Map<string, string>>;
   public login<T>(): Observable<T>;
   public login<T>(): Observable<T | Map<string, string>> {
-    return this.eventFlowService.requireLogin();
+    return this.eventFlowService.requireAuthentication();
   }
 
   public logout(): Observable<{}> {
-    return this.eventFlowService.requireLogout();
+    return this.eventFlowService.requireEndSession();
   }
 
   public userInfo<T>(): Observable<T> {

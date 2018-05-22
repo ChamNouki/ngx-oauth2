@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, of, throwError, EMPTY } from 'rxjs';
 import { filter, mergeMap } from 'rxjs/operators';
-import { IOAuth2Event } from './models/oauth2-events.interface';
+import { OAuth2Event } from './models/oauth2-events.interface';
 import { OAuth2Events } from './models/oauth2-events.enum';
 import {
-  ILoginFailedEvent,
-  ILoggedInEvent,
-  IUserInfoRecoveredEvent
+  AuthenticationFailedEvent,
+  AuthenticatedEvent,
+  UserInfoRecoveredEvent
 } from './models/oauth2-events.interface';
 import {
-  isIUserInfoRecoveredEventOrILoginFailedEvent,
-  isILoggedInEventOrILoginFailedEvent
+  isUserInfoRecoveredEventOrAuthenticationFailedEvent,
+  isAuthenticatedEventOrAuthenticationFailedEvent
 } from './models/oauth2-events.type-checker';
 import { OAuth2ConfigService } from './oauth2-config.service';
 
 @Injectable()
 export class OAuth2EventFlow {
-  private eventFlow = new Subject<IOAuth2Event>();
+  private eventFlow = new Subject<OAuth2Event>();
 
   get flow(): Observable<any> {
     return this.eventFlow;
@@ -26,16 +26,16 @@ export class OAuth2EventFlow {
   }
 
   // Triggers
-  public requireLogin<T>() {
-    this.eventFlow.next({ action: OAuth2Events.LOGGIN_REQUIRED });
+  public requireAuthentication<T>() {
+    this.eventFlow.next({ action: OAuth2Events.AUTHENTICATION_REQUIRED });
 
     if (this.config.userManagement) {
       return this.eventFlow.pipe(
 
-        filter(isIUserInfoRecoveredEventOrILoginFailedEvent),
+        filter(isUserInfoRecoveredEventOrAuthenticationFailedEvent),
 
-        mergeMap((event: IUserInfoRecoveredEvent | ILoginFailedEvent) => {
-          if (event.action === OAuth2Events.LOGIN_FAILED) {
+        mergeMap((event: UserInfoRecoveredEvent | AuthenticationFailedEvent) => {
+          if (event.action === OAuth2Events.AUTHENTICATION_FAILED) {
             return throwError(event.error);
           }
           return of(event.user);
@@ -46,30 +46,30 @@ export class OAuth2EventFlow {
 
     return this.eventFlow.pipe(
 
-      filter<IOAuth2Event, ILoggedInEvent | ILoginFailedEvent>(isILoggedInEventOrILoginFailedEvent),
+      filter<OAuth2Event, AuthenticatedEvent | AuthenticationFailedEvent>(isAuthenticatedEventOrAuthenticationFailedEvent),
 
-      mergeMap((event: ILoggedInEvent | ILoginFailedEvent) => {
-        if (event.action === OAuth2Events.LOGIN_FAILED) {
+      mergeMap((event: AuthenticatedEvent | AuthenticationFailedEvent) => {
+        if (event.action === OAuth2Events.AUTHENTICATION_FAILED) {
           return throwError(event.error);
         }
-        return of(event.token);
+        return of(event.params);
       })
 
     );
   }
 
-  public requireLogout() {
-    this.eventFlow.next({ action: OAuth2Events.LOGGOUT_REQUIRED });
+  public requireEndSession() {
+    this.eventFlow.next({ action: OAuth2Events.SESSION_END_REQUIRED });
 
     return this.eventFlow.pipe(
-      filter((event: IOAuth2Event) => event.action === OAuth2Events.LOGGED_OUT),
-      mergeMap((event: IOAuth2Event) => EMPTY)
+      filter((event: OAuth2Event) => event.action === OAuth2Events.SESSION_ENDED),
+      mergeMap((event: OAuth2Event) => EMPTY)
     );
   }
 
   // Notifiers
-  public loggedIn(token: Map<string, string>) {
-    this.eventFlow.next({ action: OAuth2Events.LOGGED_IN, token });
+  public authenticated(params: Map<string, string>) {
+    this.eventFlow.next({ action: OAuth2Events.AUTHENTICATED, params });
 
     if (this.config.userManagement) {
       this.eventFlow.next({ action: OAuth2Events.USER_INFO_REQUIRED });
@@ -80,11 +80,11 @@ export class OAuth2EventFlow {
     this.eventFlow.next({ action: OAuth2Events.USER_INFO_RECOVERED, user });
   }
 
-  public failedToLogin(error: any) {
-    this.eventFlow.next({ action: OAuth2Events.LOGIN_FAILED, error });
+  public failedToAuthenticate(error: any) {
+    this.eventFlow.next({ action: OAuth2Events.AUTHENTICATION_FAILED, error });
   }
 
-  public loggedOut() {
-    this.eventFlow.next({ action: OAuth2Events.LOGGED_OUT });
+  public sessionEnded() {
+    this.eventFlow.next({ action: OAuth2Events.SESSION_ENDED });
   }
 }

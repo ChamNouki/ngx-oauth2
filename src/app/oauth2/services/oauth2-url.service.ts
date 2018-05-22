@@ -12,7 +12,7 @@ export class OAuth2UrlService {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    const fragment = window.location.hash.slice(window.location.hash.lastIndexOf('#') + 1);
+    const fragment = window.location.hash.substring(1);
 
     if (fragment.length > 0) {
       (window.opener as IExtendedWindow).setOauthParams(window, this.parseFragment(fragment));
@@ -27,9 +27,11 @@ export class OAuth2UrlService {
     fragment.split('&')
       // then split each key=params on '='
       .map((params: string) => params.split('='))
-      // then saving key/value pair
-      .forEach((paramsKeyValue: string[]) => {
-        tokenMap.set(paramsKeyValue[0], paramsKeyValue[1]);
+      // then saving decoded key/value pair
+      .forEach(([key, value]) => {
+        key = decodeURIComponent(key);
+        value = decodeURIComponent(value);
+        tokenMap.set(key, value);
       });
 
     return tokenMap;

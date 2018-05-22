@@ -11,7 +11,8 @@ export class LockingModalComponent {
   constructor(@Inject(PLATFORM_ID) private platformId: any, private config: OAuth2ConfigService) {
   }
 
-  public openLoginScreen() {
-    openLoginScreen(this.config.loginUrl, this.platformId);
+  public async openLoginScreen(): Promise<void> {
+    const url = await this.config.getAuthorizationUrl();
+    openLoginScreen(url, this.platformId);
   }
 }
