@@ -9,8 +9,8 @@ export class APIManagerInterceptor implements HttpInterceptor {
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let apiKey;
-    if (this.config.apiKeys) {
-      apiKey = Object.keys(this.config.apiKeys).filter((urlPattern: string) => {
+    if (this.config.api_keys) {
+      apiKey = Object.keys(this.config.api_keys).filter((urlPattern: string) => {
         new RegExp(urlPattern).test(req.url);
       })[0];
     }

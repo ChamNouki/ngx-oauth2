@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { OAuth2Events } from '../models/oauth2-events.enum';
+import { OAuth2Event } from '../models/oauth2-events.interface';
+import { OpenIdUser } from '../models/openid-user';
 import { OAuth2ConfigService } from './oauth2-config.service';
 import { OAuth2EventFlow } from './oauth2-event-flow.service';
-import { OAuth2Event } from './models/oauth2-events.interface';
-import { OAuth2Events } from './models/oauth2-events.enum';
+
 
 @Injectable()
 export class OAuth2UserService {
@@ -22,19 +25,17 @@ export class OAuth2UserService {
     });
   }
 
-  public async getUser<T>(): Promise<T> {
-    if (!this.user) {
-      try {
-        const userInfoUrl = this.config.userInfoUrl;
-        if (!userInfoUrl) {
-          throw new Error('No user endpoint in configuration');
-        }
-        this.user = await this.http.get<T>(userInfoUrl).toPromise();
-        this.eventFlow.userInfoRecovered(this.user);
-      } catch (error) {
-        this.eventFlow.failedToAuthenticate(error);
-        throw error;
-      }
+  public async getUser(): Promise<OpenIdUser> {
+    if (!this.config.userinfo_endpoint) {
+      throw new Error('No user endpoint in configuration');
+    }
+
+    try {
+      this.user = await this.http.get<OpenIdUser>(this.config.userinfo_endpoint).toPromise();
+      this.eventFlow.userInfoReceived(this.user);
+    } catch (error) {
+      this.eventFlow.failedToAuthenticate(error);
+      throw error;
     }
 
     return this.user;

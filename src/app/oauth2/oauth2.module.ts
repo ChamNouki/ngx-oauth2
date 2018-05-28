@@ -1,23 +1,24 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 
-import { applicationRouter } from './oauth2.routes';
-import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
+import { app_initializer } from './app_initializer';
 import { LockingModalComponent } from './components/locking-modal/locking-modal.component';
-import { IOAuth2ClientConfig, OAuth2ClientConfig } from './services/models/oauth2-client-config.model';
-import { OAuth2EventFlow } from './services/oauth2-event-flow.service';
-import { OAuth2ConfigService } from './services/oauth2-config.service';
-import { OAuth2UrlService } from './services/oauth2-url.service';
-import { OAuth2ModalService } from './services/oauth2-modal.service';
-import { OAuth2HandlerService } from './services/oauth2-handler.service';
-import { OAuth2ConnectionService } from './services/oauth2-connection.service';
-import { OAuth2TokenService } from './services/oauth2-token.service';
-import { OAuth2UserService } from './services/oauth2-user.service';
-import { OAuth2Service } from './services/oauth2.service';
+import { OAuth2CallbackComponent } from './components/oauth2-callback.component';
+import { IOAuth2ClientConfig, OAuth2ClientConfig } from './models/oauth2-client-config.model';
+import { applicationRouter } from './oauth2.routes';
 import { OAuth2ConnectedGuard } from './services/guards/oauth2-connected.guard';
 import { OAuth2VisitorGuard } from './services/guards/oauth2-visitor.guard';
 import { OAuth2Interceptor } from './services/interceptors/oauth2.interceptor';
+import { OAuth2ConfigService } from './services/oauth2-config.service';
+import { OAuth2ConnectionService } from './services/oauth2-connection.service';
+import { OAuth2EventFlow } from './services/oauth2-event-flow.service';
+import { OAuth2ModalService } from './services/oauth2-modal.service';
+import { OAuth2TokenService } from './services/oauth2-token.service';
+import { OAuth2UrlService } from './services/oauth2-url.service';
+import { OAuth2UserService } from './services/oauth2-user.service';
+import { OAuth2Service } from './services/oauth2.service';
+
+
 
 @NgModule({
   declarations: [
@@ -40,12 +41,14 @@ export class OAuth2Module {
     return {
       ngModule: OAuth2Module,
       providers: [
-        { provide: OAuth2ClientConfig, useValue: clientConfig },
+        {
+          provide: OAuth2ClientConfig,
+          useValue: clientConfig
+        },
         OAuth2EventFlow,
         OAuth2ConfigService,
         OAuth2UrlService,
         OAuth2ModalService,
-        OAuth2HandlerService,
         OAuth2ConnectionService,
         OAuth2TokenService,
         OAuth2UserService,
@@ -56,6 +59,12 @@ export class OAuth2Module {
           provide: HTTP_INTERCEPTORS,
           useClass: OAuth2Interceptor,
           multi: true,
+        },
+        {
+          provide: APP_INITIALIZER,
+          useFactory: app_initializer,
+          multi: true,
+          deps: [HttpClient, OAuth2ConfigService, OAuth2ClientConfig]
         }
       ]
     };

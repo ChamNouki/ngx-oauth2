@@ -1,44 +1,40 @@
-import { IOAuth2ClientConfig, OAuth2ClientConfig } from './models/oauth2-client-config.model';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+
+import { IOAuth2ClientConfig, OAuth2ClientConfig } from '../models/oauth2-client-config.model';
+import { OpenIdMetadata } from '../models/openId-metadata';
 
 @Injectable()
 export class OAuth2ConfigService implements IOAuth2ClientConfig {
   public scope = 'openid profile';
-  public responseType = 'id_token token';
-  public clientId: string;
-  public authorizationEndpoint: string;
-  public endSessionEndpoint?: string;
-  public userInfoEndpoint?: string;
+  public response_type = 'id_token token';
+  public nonce: string;
 
-  public apiKeys?: { [urlPattern: string]: string };
+  public client_id: string;
+  public endpoints_discovery: string;
+  public api_keys?: { [urlPattern: string]: string };
 
-  private nonce: string;
+  public authorization_endpoint?: string;
+  public token_endpoint?: string;
+  public userinfo_endpoint?: string;
+  public registration_endpoint?: string;
+  public introspection_endpoint?: string;
+  public revocation_endpoint?: string;
+  public end_session_endpoint?: string;
 
-  get userManagement(): boolean {
-    return Boolean(this.userInfoEndpoint);
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: any,
+    @Inject(OAuth2ClientConfig) clientConfig: IOAuth2ClientConfig
+  ) {
+    const isNotCorrectlyConfigured = clientConfig == null || clientConfig.client_id == null
+      || (clientConfig.endpoints_discovery == null && clientConfig.authorization_endpoint == null);
+    if (isNotCorrectlyConfigured) {
+      throw new Error('Client id and discovery or authorization endpoint should be defined in module configuration');
+    }
   }
 
-  get endSessionUrl(): string | null {
-    if (this.endSessionEndpoint) {
-      return this.endSessionEndpoint;
-    }
-    return null;
-  }
-
-  get userInfoUrl(): string | null {
-    if (this.userInfoEndpoint) {
-      return this.userInfoEndpoint;
-    }
-    return null;
-  }
-
-  constructor(@Inject(PLATFORM_ID) private platformId: any, clientConfig: OAuth2ClientConfig) {
-    if (clientConfig == null || clientConfig.clientId == null || clientConfig.authorizationEndpoint == null) {
-      throw new Error('Client id and authorization endpoint should be defined');
-    }
-
-    Object.assign(this, clientConfig);
+  public configure(metadata: OpenIdMetadata, clientConfig: IOAuth2ClientConfig) {
+    Object.assign(this, metadata, clientConfig);
   }
 
   public async getAuthorizationUrl(): Promise<string> {
@@ -46,11 +42,11 @@ export class OAuth2ConfigService implements IOAuth2ClientConfig {
       throw new Error('Not on browser platform.');
     }
 
-    const nonce = this.getNonce(32);
+    this.nonce = this.getNonce(32);
     const redirectUri = encodeURIComponent(window.location.origin);
 
-    return `${this.authorizationEndpoint}?client_id=${this.clientId}&scope=${this.scope}&response_type=${this.responseType}\
-&nonce=${nonce}&redirect_uri=${redirectUri}/oauth2_callback`;
+    return `${this.authorization_endpoint}?client_id=${this.client_id}&scope=${this.scope}&response_type=${this.response_type}\
+&nonce=${this.nonce}&redirect_uri=${redirectUri}/oauth2_callback`;
   }
 
   private getNonce(length): string {

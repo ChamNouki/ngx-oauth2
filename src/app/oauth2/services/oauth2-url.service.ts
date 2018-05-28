@@ -1,6 +1,6 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { IExtendedWindow } from './models/extended-window.interface';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { IExtendedWindow } from '../models/extended-window.interface';
 
 @Injectable()
 export class OAuth2UrlService {

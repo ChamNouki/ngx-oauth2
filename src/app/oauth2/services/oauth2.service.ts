@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, throwError } from 'rxjs';
-import { OAuth2EventFlow } from './oauth2-event-flow.service';
-import { OAuth2UserService } from './oauth2-user.service';
-import { OAuth2TokenService } from './oauth2-token.service';
+import { Observable } from 'rxjs';
+
+import { OpenIdUser } from '../models/openid-user';
 import { OAuth2ConfigService } from './oauth2-config.service';
-import { OAuth2Token } from './models/oauth2-token.model';
+import { OAuth2EventFlow } from './oauth2-event-flow.service';
+import { OAuth2TokenService } from './oauth2-token.service';
+import { OAuth2UserService } from './oauth2-user.service';
 
 @Injectable()
 export class OAuth2Service {
@@ -15,27 +16,26 @@ export class OAuth2Service {
   }
 
   public isConnected(): boolean {
-    return this.tokenService.isValid() && (!this.config.userManagement || this.userService.hasInfo());
+    return this.tokenService.hasNotExpired();
   }
 
-  public login(): Observable<Map<string, string>>;
-  public login<T>(): Observable<T>;
-  public login<T>(): Observable<T | Map<string, string>> {
+  public login(): Observable<void | OpenIdUser> {
     return this.eventFlowService.requireAuthentication();
   }
 
-  public logout(): Observable<{}> {
+  public logout(): Observable<void> {
     return this.eventFlowService.requireEndSession();
   }
 
-  public userInfo<T>(): Observable<T> {
-    if (this.config.userManagement) {
-      return from(this.userService.getUser<T>());
-    }
-    return throwError('User management is not activated cause userEndpoint config is not set.');
+  public userInfo(): Observable<OpenIdUser> {
+    return this.eventFlowService.requireUserInfo();
   }
 
-  public token(): OAuth2Token {
-    return this.tokenService.getToken();
+  public getAuthorizationHeader(): string | null {
+    try {
+      return this.tokenService.getAuthorizationHeader();
+    } catch (e) {
+      return null;
+    }
   }
 }
