@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
-
+import * as momentImported from 'moment';
 import { OAuth2Events } from '../models/oauth2-events.enum';
 import { OAuth2Event } from '../models/oauth2-events.interface';
-import { OpenIdUser } from '../models/openid-user';
 import { OAuth2ConfigService } from './oauth2-config.service';
 import { OAuth2EventFlow } from './oauth2-event-flow.service';
 
-
+const moment = momentImported;
 
 @Injectable()
 export class OAuth2TokenService {
@@ -15,7 +13,7 @@ export class OAuth2TokenService {
   public access_token?: string;
   public id_token?: string;
   public session_state?: string;
-  public receivedAt: moment.Moment;
+  public receivedAt: momentImported.Moment;
 
   public static decodeToken(token: string): any[] {
     const base64Header = token.split('.')[0].replace(/-/g, '+').replace(/_/g, '/');
@@ -45,20 +43,6 @@ export class OAuth2TokenService {
 
     const [header, body] = OAuth2TokenService.decodeToken(this.access_token);
     return `${body.typ} ${this.access_token}`;
-  }
-
-  public getUserInfo(): OpenIdUser {
-    if (!this.id_token) {
-      throw new Error('No id_token available.');
-    }
-
-    const [header, body] = OAuth2TokenService.decodeToken(this.id_token);
-    return Object.keys(body)
-      .filter(key => OpenIdUser.includes(key))
-      .reduce((user, key) => {
-        user[key] = body[key];
-        return user;
-      }, {} as OpenIdUser);
   }
 
   public setToken(params: Map<string, string>) {
