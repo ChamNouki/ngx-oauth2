@@ -1,16 +1,23 @@
 language: nodejs
+node_js:
+  - "8"
+
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm run clean
+
 install: npm install
+
 script:
   - npm run lint
   - npm test -- --watch false
   - npm run build
+
 before_deploy:
   - cd dist
+
 deploy:
   skip_cleanup: true
   on:
