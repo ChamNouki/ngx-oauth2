@@ -12,13 +12,13 @@ npm install ngx-oauth2 --save
 
 ### Basic usage
 
-Just import the module and give him the API Management's provided clientId which allow your front application to communicate to your API.
+Just import the module and give him the API Management's provided client_id which allow your front application to communicate to your API, and the url of the discovery endpoint of your OpenId SSO.
 
 ```Typescript
 @NgModule({
     imports: [
         ...,
-        OAuth2Module.forRoot({clientId: '', loginEndpoint: ''})
+        OAuth2Module.forRoot({client_id: '', endpoints_discovery: ''})
     ],
     providers: [...],
     bootstrap: [AppComponent]
@@ -30,17 +30,17 @@ And you just have to use the HttpClient service the regular way.
 
 ### Advanced configuration
 
-* `apiKeys?: {[urlPattern: string]: string};`
-* `logoutEndpoint?: string;`
-* `userEndpoint?: string;`
+This module configuration follow the [OpenId connect meta-data convention](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata). So you can specify or override any configuration.
+
+Keep in mind that the module require at least the `authorization_endpoint` config value, and optionally the `userinfo_endpoint` to retrieve user information. 
 
 ### OAuth2Service
 
 * `isConnected(): boolean`
-* `login(): Observable<Map<string, string>>`
-* `logout(): Observable<{}>`
-* `userInfo<T>(): Observable<T>`
-* `token(): OAuth2Token`
+* `login(): Observable<void | OpenIdUser>`
+* `logout(): Observable<void>`
+* `userInfo<OpenIdUser>(): Observable<T>`
+* `getAuthorizationHeader(): string`
 
 ### Guards
 
