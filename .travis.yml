@@ -7,7 +7,7 @@ before_install:
 install: npm install
 script:
   - npm run lint
-  - npm test
+  - npm test -- --watch false
   - npm run build
 before_deploy:
   - cd dist
