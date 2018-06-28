@@ -5,7 +5,7 @@ import { Hero } from '../models/hero';
 import { HeroService } from '../services/hero.service';
 
 @Component({
-  selector: 'oauth2-dashboard',
+  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { OAuth2ConnectedGuard } from './oauth2/services/guards/oauth2-connected.guard';
+import { OIDCConnectedGuard } from 'ngx-oidc';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroesComponent } from './heroes/heroes.component';
@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'detail/:id',
     component: HeroDetailComponent,
-    canActivate: [OAuth2ConnectedGuard]
+    canActivate: [OIDCConnectedGuard]
   },
   { path: 'heroes', component: HeroesComponent }
 ];

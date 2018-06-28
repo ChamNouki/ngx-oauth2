@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule, InMemoryDbService } from 'angular-in-memory-web-api';
 
-import { OAuth2Module } from './oauth2/oauth2.module';
-import { OAuth2ConnectedGuard } from './oauth2/services/guards/oauth2-connected.guard';
+import { NgxOidcModule, OIDCConnectedGuard } from 'ngx-oidc';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,7 +29,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
       delay: 300,
       passThruUnknownUrl: true
     }),
-    OAuth2Module.forRoot(environment.oauth2)
+    NgxOidcModule.forRoot(environment.oidc)
   ],
   declarations: [
     AppComponent,
@@ -41,7 +40,7 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
   ],
   providers: [
     HeroService,
-    OAuth2ConnectedGuard
+    OIDCConnectedGuard
   ],
   bootstrap: [AppComponent]
 })

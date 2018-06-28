@@ -4,7 +4,7 @@ import { Hero } from '../models/hero';
 import { HeroService } from '../services/hero.service';
 
 @Component({
-  selector: 'oauth2-hero-detail',
+  selector: 'app-hero-detail',
   templateUrl: './hero-detail.component.html',
   styleUrls: ['./hero-detail.component.css']
 })

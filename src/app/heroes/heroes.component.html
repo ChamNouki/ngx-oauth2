@@ -12,7 +12,7 @@
 <div class="error" *ngIf="error">{{error}}</div>
 <button (click)="addHero()">Add New Hero</button>
 <div *ngIf="addingHero">
-  <oauth2-hero-detail (close)="close($event)"></oauth2-hero-detail>
+  <app-hero-detail (close)="close($event)"></app-hero-detail>
 </div>
 
 <div *ngIf="selectedHero">

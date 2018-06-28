@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  oauth2: {
+  oidc: {
     client_id: 'fake_client_id',
     endpoints_discovery: 'http://keycloak-sso.app.norsys.fr/auth/realms/Norsys/.well-known/openid-configuration'
   }
