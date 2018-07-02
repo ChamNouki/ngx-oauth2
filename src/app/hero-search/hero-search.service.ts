@@ -11,7 +11,7 @@ export class HeroSearchService {
 
   search(term: string): Observable<Hero[]> {
     return this.http
-      .get<Hero[]>(`app/heroes/?name=${term}`)
+      .get<Hero[]>(`api/heroes?name_like=${term}`)
       .pipe(catchError(this.handleError));
   }
 
