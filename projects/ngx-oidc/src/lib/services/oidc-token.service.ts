@@ -63,16 +63,16 @@ export class OIDCTokenService {
     }
     const [header, body] = OIDCTokenService.decodeToken(this.access_token);
     const exp = moment.unix(body.exp);
-    return exp.isBefore(moment());
+    return exp.isAfter(moment());
   }
 
-  public isNotTooRecent(): boolean {
+  public isTooRecent(): boolean {
     if (!this.access_token) {
       return false;
     }
     const [header, body] = OIDCTokenService.decodeToken(this.access_token);
     const iat = moment.unix(body.iat);
-    return moment().isAfter(iat.add(1, 'minutes'));
+    return moment().isBefore(iat.add(1, 'minutes'));
   }
 
   public reset() {

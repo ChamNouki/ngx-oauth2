@@ -43,7 +43,7 @@ export class OIDCConnectionService {
       return;
     }
 
-    if (this.tokenService.isNotTooRecent()) {
+    if (this.tokenService.isTooRecent()) {
       throw new Error('Seems to be to much fedid redirection.');
     }
 
