@@ -27,3 +27,14 @@ services:
     - 8080:8080
     depends_on:
     - postgres
+  api:
+    image: 'node:latest'
+    user: 'node'
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - '3000:3000'
+    entrypoint: ['node', './json-server/server.js']
