@@ -13,7 +13,6 @@ export class OIDCTokenService {
   public access_token?: string;
   public id_token?: string;
   public session_state?: string;
-  public receivedAt: momentImported.Moment;
 
   public static decodeToken(token: string): any[] {
     const base64Header = token.split('.')[0].replace(/-/g, '+').replace(/_/g, '/');
@@ -49,7 +48,6 @@ export class OIDCTokenService {
     this.access_token = params.get('access_token');
     this.id_token = params.get('id_token');
     this.session_state = params.get('session_state');
-    this.receivedAt = moment.utc();
 
     try {
       this.validateIdToken();
@@ -64,8 +62,8 @@ export class OIDCTokenService {
       return false;
     }
     const [header, body] = OIDCTokenService.decodeToken(this.access_token);
-    const exp = moment.utc(body.exp);
-    return exp.isBefore(moment.utc());
+    const exp = moment.unix(body.exp);
+    return exp.isBefore(moment());
   }
 
   public isNotTooRecent(): boolean {
@@ -73,15 +71,14 @@ export class OIDCTokenService {
       return false;
     }
     const [header, body] = OIDCTokenService.decodeToken(this.access_token);
-    const iat = moment.utc(body.iat);
-    return moment.utc().isAfter(iat.add(1, 'minutes'));
+    const iat = moment.unix(body.iat);
+    return moment().isAfter(iat.add(1, 'minutes'));
   }
 
   public reset() {
     delete this.access_token;
     delete this.id_token;
     delete this.session_state;
-    delete this.receivedAt;
   }
 
   private validateIdToken() {
