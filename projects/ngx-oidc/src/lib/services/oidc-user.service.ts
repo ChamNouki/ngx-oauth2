@@ -8,9 +8,7 @@ import { OIDCConfigService } from './oidc-config.service';
 import { OIDCEventFlow } from './oidc-event-flow.service';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCUserService {
   private user: any;
 

@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 
-import { app_initializer } from './app_initializer';
+import { getOIDCConfig } from './app_initializer';
 import { LockingModalComponent } from './components/locking-modal/locking-modal.component';
 import { OIDCCallbackComponent } from './components/oidc-callback.component';
 import { IOIDCClientConfig, OIDCClientConfig } from './models/oidc-client-config.model';
@@ -18,8 +18,6 @@ import { OIDCUrlService } from './services/oidc-url.service';
 import { OIDCUserService } from './services/oidc-user.service';
 import { OIDCService } from './services/oidc.service';
 
-
-
 @NgModule({
   declarations: [
     OIDCCallbackComponent,
@@ -33,8 +31,7 @@ import { OIDCService } from './services/oidc.service';
   ],
   imports: [
     applicationRouter
-  ],
-  providers: []
+  ]
 })
 export class NgxOidcModule {
   public static forRoot(clientConfig: IOIDCClientConfig): ModuleWithProviders {
@@ -62,7 +59,7 @@ export class NgxOidcModule {
         },
         {
           provide: APP_INITIALIZER,
-          useFactory: app_initializer,
+          useFactory: getOIDCConfig,
           multi: true,
           deps: [HttpClient, OIDCConfigService, OIDCClientConfig]
         }
@@ -70,7 +67,7 @@ export class NgxOidcModule {
     };
   }
 
-  constructor(urlService: OIDCUrlService, connectionService: OIDCConnectionService) {
+  constructor(urlService: OIDCUrlService, connectionService: OIDCConnectionService, userService: OIDCUserService) {
     urlService.checkDataInHash();
   }
 }

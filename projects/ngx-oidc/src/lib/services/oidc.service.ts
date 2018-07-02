@@ -5,9 +5,7 @@ import { OpenIdUser } from '../models/openid-user';
 import { OIDCEventFlow } from './oidc-event-flow.service';
 import { OIDCTokenService } from './oidc-token.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCService {
   constructor(private tokenService: OIDCTokenService,
     private eventFlowService: OIDCEventFlow) {

@@ -4,7 +4,7 @@ import { IOIDCClientConfig } from './models/oidc-client-config.model';
 import { OpenIdMetadata } from './models/openId-metadata';
 import { OIDCConfigService } from './services/oidc-config.service';
 
-export function app_initializer(http: HttpClient, config: OIDCConfigService, clientConfig: IOIDCClientConfig): () => Promise<any> {
+export function getOIDCConfig(http: HttpClient, config: OIDCConfigService, clientConfig: IOIDCClientConfig): () => Promise<any> {
   return (): Promise<any> => {
     return http.get<OpenIdMetadata>(clientConfig.endpoints_discovery).pipe(map(metadata => {
       config.configure(metadata, clientConfig);

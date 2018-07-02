@@ -7,9 +7,7 @@ import { OIDCEventFlow } from './oidc-event-flow.service';
 
 const moment = momentImported;
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCTokenService {
 
   public access_token?: string;

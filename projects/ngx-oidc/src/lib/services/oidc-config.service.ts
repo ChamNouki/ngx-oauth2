@@ -4,9 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { IOIDCClientConfig, OIDCClientConfig } from '../models/oidc-client-config.model';
 import { OpenIdMetadata } from '../models/openId-metadata';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCConfigService implements IOIDCClientConfig {
   public scope = 'openid profile';
   public response_type = 'id_token token';

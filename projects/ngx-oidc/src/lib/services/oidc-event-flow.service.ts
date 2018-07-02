@@ -16,9 +16,7 @@ import { OIDCConfigService } from './oidc-config.service';
 
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCEventFlow {
   private eventFlow = new Subject<OIDCEvent>();
 

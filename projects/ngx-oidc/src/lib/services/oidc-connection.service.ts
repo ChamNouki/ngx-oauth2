@@ -11,9 +11,7 @@ import { OIDCTokenService } from './oidc-token.service';
 import { openLoginScreen } from './openLoginScreen';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCConnectionService {
   constructor(@Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone,

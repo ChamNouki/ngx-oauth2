@@ -8,9 +8,7 @@ import {
   Type
 } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCModalService {
   private modalRef: ComponentRef<any>;
   private hostDomElement: Element;

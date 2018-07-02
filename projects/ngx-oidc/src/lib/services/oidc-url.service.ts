@@ -2,9 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { IExtendedWindow } from '../models/extended-window.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OIDCUrlService {
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
